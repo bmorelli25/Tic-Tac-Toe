@@ -13,7 +13,8 @@ class App extends Component {
         ' ',' ',' ',
         ' ',' ',' ',
         ' ',' ',' '
-      ]
+      ],
+      turn: "X"
     }
   }
 
@@ -30,13 +31,15 @@ class App extends Component {
           <ResetButton />
         </div>
         {this.state.gameBoard.map(function(value, i){
-          <Tile
-            key={i}
-            loc={i}
-            value={value}
-            updateBoard={this.updateBoard.bind(this)}
-            turn={this.state.turn}
-          />
+          return (
+            <Tile
+              key={i}
+              loc={i}
+              value={value}
+              updateBoard={this.updateBoard.bind(this)}
+              turn={this.state.turn}
+            />
+          )
         }.bind(this))};
       </div>
     );
