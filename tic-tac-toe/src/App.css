@@ -1,3 +1,15 @@
-.App {
+button {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.container {
+  width: 950px;
+  margin: 0 auto;
+}
+
+.menu {
   text-align: center;
+  width: 90%;
 }

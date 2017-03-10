@@ -10,17 +10,44 @@ class App extends Component {
     super();
     this.state = {
       gameBoard: [
-        ' x',' o',' ',
+        ' ',' ',' ',
         ' ',' ',' ',
         ' ',' ',' '
       ],
-      turn: "X",
+      turn: "x",
       winner: null
     }
   }
 
   updateBoard(loc, player) {
+    if(this.state.gameBoard[loc] === 'x' || this.state.gameBoard[loc] === 'o' || this.state.winner){
+      //box already taken, so just return.
+      return;
+    }
 
+    let currentGameBoard = this.state.gameBoard;
+    currentGameBoard.splice(loc,1,this.state.turn);
+    this.setState({gameBoard: currentGameBoard});
+
+    if (
+      (currentGameBoard[0] === this.state.turn && currentGameBoard[1] === this.state.turn && currentGameBoard[2] === this.state.turn) ||
+      (currentGameBoard[3] === this.state.turn && currentGameBoard[4] === this.state.turn && currentGameBoard[5] === this.state.turn) ||
+      (currentGameBoard[6] === this.state.turn && currentGameBoard[7] === this.state.turn && currentGameBoard[8] === this.state.turn) ||
+      (currentGameBoard[0] === this.state.turn && currentGameBoard[3] === this.state.turn && currentGameBoard[6] === this.state.turn) ||
+      (currentGameBoard[1] === this.state.turn && currentGameBoard[4] === this.state.turn && currentGameBoard[7] === this.state.turn) ||
+      (currentGameBoard[2] === this.state.turn && currentGameBoard[5] === this.state.turn && currentGameBoard[8] === this.state.turn) ||
+      (currentGameBoard[0] === this.state.turn && currentGameBoard[4] === this.state.turn && currentGameBoard[8] === this.state.turn) ||
+      (currentGameBoard[2] === this.state.turn && currentGameBoard[4] === this.state.turn && currentGameBoard[6] === this.state.turn)
+      ) {
+        this.setState({winner: this.state.turn});
+        return;
+      }
+
+      let moves = this.state.gameBoard.join('').replace(/ /g,'');
+      if(moves.length === 9){
+        this.setState({winner: 'd'});
+      }
+      this.setState({turn: (this.state.turn === 'x') ? 'o' : 'x'});
   }
 
   resetBoard(){
@@ -30,7 +57,7 @@ class App extends Component {
         ' ',' ',' ',
         ' ',' ',' '
       ],
-      turn: "X",
+      turn: "x",
       winner: null
     })
   }

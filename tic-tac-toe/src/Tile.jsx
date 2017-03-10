@@ -3,6 +3,7 @@ import './Tile.css';
 
 export default class Tile extends Component {
   tileClick(props) {
+    console.log("click: ", props.loc, props.turn);
     props.updateBoard(props.loc, props.turn);
   }
   render() {
