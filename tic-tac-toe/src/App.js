@@ -10,11 +10,12 @@ class App extends Component {
     super();
     this.state = {
       gameBoard: [
-        ' ',' ',' ',
+        ' x',' o',' ',
         ' ',' ',' ',
         ' ',' ',' '
       ],
-      turn: "X"
+      turn: "X",
+      winner: null
     }
   }
 
@@ -22,13 +23,25 @@ class App extends Component {
 
   }
 
+  resetBoard(){
+    this.setState({
+      gameBoard: [
+        ' ',' ',' ',
+        ' ',' ',' ',
+        ' ',' ',' '
+      ],
+      turn: "X",
+      winner: null
+    })
+  }
+
   render() {
     return (
       <div className="container">
         <div className="menu">
           <h1>Tic-Tac-Toe</h1>
-          <Announcement />
-          <ResetButton />
+          <Announcement winner={this.state.winner}/>
+          <ResetButton reset={this.resetBoard.bind(this)}/>
         </div>
         {this.state.gameBoard.map(function(value, i){
           return (
