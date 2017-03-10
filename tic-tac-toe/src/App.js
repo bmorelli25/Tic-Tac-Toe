@@ -16,6 +16,11 @@ class App extends Component {
       ]
     }
   }
+
+  updateBoard(loc, player) {
+
+  }
+
   render() {
     return (
       <div className="container">
@@ -25,8 +30,14 @@ class App extends Component {
           <ResetButton />
         </div>
         {this.state.gameBoard.map(function(value, i){
-          <Tile />
-        })};
+          <Tile
+            key={i}
+            loc={i}
+            value={value}
+            updateBoard={this.updateBoard.bind(this)}
+            turn={this.state.turn}
+          />
+        }.bind(this))};
       </div>
     );
   }
