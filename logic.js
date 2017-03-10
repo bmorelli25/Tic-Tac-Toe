@@ -1,12 +1,105 @@
+$(document).ready(function() {
+  $(".white").click(function() {
+    $(".box, p").css("visibility", "hidden");
+    $("td").css("visibility", "visible");
+    aiCo = "#333";
+    huCo = "white";
+    console.log("white");
+  });
+  $(".grey").click(function() {
+    $(".box, p").css("visibility", "hidden");
+    $("td").css("visibility", "visible");
+    console.log("black");
+  });
+
+  $("td").click(function() {
+    move(this, huPlayer, huCo);
+    console.log("clicked");
+  });
+});
+var board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+//var huPlayer = "P";
+//var aiPlayer = "C";
+var iter = 0;
+var round = 0;
+var aiCo = "white";
+var huCo = "#333";
+
+function move(element, player, color) {
+  console.log("element"+ element.id);
+  if (board[element.id] != "P" && board[element.id] != "C") {
+    round++;
+    $(element).css("background-color", color);
+    board[element.id] = player;
+    console.log(board);
+
+    if (winning(board, player)) {
+      setTimeout(function() {
+        alert("YOU WIN");
+        reset();
+      }, 500);
+      return;
+    } else if (round > 8) {
+      setTimeout(function() {
+        alert("TIE");
+        reset();
+      }, 500);
+      return;
+    } else {
+      round++;
+      var index = play(board, aiPlayer).index;
+      console.log("Index: ", index);
+      var selector = "#" + index;
+      $(selector).css("background-color", aiCo);
+      board[index] = aiPlayer;
+      console.log("Board: ", board);
+      console.log("Index Clicked: ", index);
+      console.log("FC: ", fc);
+      if (winning(board, aiPlayer)) {
+        setTimeout(function() {
+          alert("YOU LOSE");
+          reset();
+        }, 500);
+        return;
+      } else if (round === 0) {
+        setTimeout(function() {
+          alert("tie");
+          reset();
+        }, 500);
+        return;
+      }
+    }
+  }
+}
+
+function reset() {
+  round = 0;
+  board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  $("td").css("background-color", "transparent");
+}
+
+
+
+
+
+
 /* for testing, we start with an advanced board
-   |   | F
+ T |   | F
  - - - - -
  F |   | F
  - - - - -
    | T | T
 */
-var startingBoard = [0,1,false,false,4,false,6,true,true];
-var newBoard = [0,1,2,3,4,5,6,7,8];
+var startingBoard = [true,1,false,false,4,false,6,true,true];
+//var newBoard = [0,1,2,3,4,5,6,7,8];
+
+//keep count of function calls
+var fc = 0;
+
+//finding the best play that favors the ai
+// var bestPlay = play(startingBoard, aiPlayer);
+// console.log("index: ", bestPlay.index);
+// console.log("function calls: ", fc);
 
 //set our players and declare their pieces
 var huPlayer = true; //O
@@ -18,13 +111,15 @@ function emptySpaces(board){
 };
 
 //testing to make sure the empty board spaces are returned.
-console.log("Empty Spaces: ", emptySpaces(startingBoard));
-console.log("Play Ai: ", play(startingBoard, aiPlayer));
-console.log("Play Hu: ", play(startingBoard, huPlayer));
-console.log("Play NEW HU: ", play(newBoard, aiPlayer));
+// console.log("Empty Spaces: ", emptySpaces(startingBoard));
+// console.log("Play Ai: ", play(startingBoard, aiPlayer));
+// console.log("Play Hu: ", play(startingBoard, huPlayer));
 
 //the main algorythm
 function play(newBoard, player){
+
+  //count the function calls
+  fc++;
 
   //find all available spots
   let availableSpots = emptySpaces(newBoard);
@@ -65,6 +160,8 @@ function play(newBoard, player){
     //push the object to the array
     moves.push(move);
   }
+  //don't do this. logs 60,000 moves arrays
+  //console.log("Moves: ", moves);
 
   var bestMove;
   //if it's ai turn, loop and choose move with highest score.
@@ -88,7 +185,7 @@ function play(newBoard, player){
   }
 
   //return the chosen move (object) from the moves array
-    return moves[bestMove];
+  return moves[bestMove];
 }
 
 
